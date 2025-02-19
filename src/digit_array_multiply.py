@@ -24,11 +24,14 @@ def multiply_digit_arrays(A, B):
     num1 = int(''.join(map(str, A)))
     num2 = int(''.join(map(str, B)))
     
-    # Multiply and convert result back to digit array
+    # Multiply
     result = num1 * num2
     
-    # Pad the result with leading zeros to match the input array length
+    # Convert result to string and digit list
     result_str = str(result)
-    result_digits = [int(digit) for digit in result_str]
+    
+    # Pad the result with leading zeros to match the input array length
+    padded_result = result_str.zfill(len(A) * 2)
+    result_digits = [int(digit) for digit in padded_result]
     
     return result_digits
