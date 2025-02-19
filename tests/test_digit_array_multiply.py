@@ -12,7 +12,7 @@ def test_single_digit_array():
 
 def test_unequal_length_arrays():
     with pytest.raises(ValueError, match="Input arrays must be of equal length"):
-        multiply_digit_array([1, 2], [1, 2, 3])
+        multiply_digit_arrays([1, 2], [1, 2, 3])
 
 def test_invalid_digit():
     with pytest.raises(ValueError, match="All digits must be between 0 and 9"):

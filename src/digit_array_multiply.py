@@ -26,4 +26,9 @@ def multiply_digit_arrays(A, B):
     
     # Multiply and convert result back to digit array
     result = num1 * num2
-    return [int(digit) for digit in str(result)]
+    
+    # Pad the result with leading zeros to match the input array length
+    result_str = str(result)
+    result_digits = [int(digit) for digit in result_str]
+    
+    return result_digits
