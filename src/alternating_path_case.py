@@ -47,18 +47,24 @@ def convert_to_alternating_path_case(input_string: str) -> str:
     if not words:
         return ""
     
-    # Process words: keep numbers together, join letters
+    # Process words: keep adjacent letters together, handle numbers
     processed_words = []
-    current_word = words[0]
+    current_word = ""
+    current_is_numeric = False
     
-    for word in words[1:]:
-        # If current word is numeric or previous word is numeric
-        if word.isnumeric() or current_word.isnumeric():
+    for word in words:
+        # Check if current word is numeric
+        is_numeric = word.isnumeric()
+        
+        # If it's a number or matches the current state, extend the current word
+        if is_numeric == current_is_numeric or not current_word:
+            current_word += word
+            current_is_numeric = is_numeric
+        else:
+            # Add the previous word and start a new one
             processed_words.append(current_word)
             current_word = word
-        else:
-            # Concatenate non-numeric words
-            current_word += word
+            current_is_numeric = is_numeric
     
     # Add the last word
     processed_words.append(current_word)
