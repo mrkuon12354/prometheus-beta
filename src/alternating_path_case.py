@@ -32,42 +32,43 @@ def convert_to_alternating_path_case(input_string: str) -> str:
         raise TypeError("Input must be a string")
     
     # Convert camel case and snake case to space-separated words
-    # This regex will insert a space before any uppercase letter (except at the start)
-    # and replace underscores with spaces
+    # First replace underscores with spaces
+    # Then split camel case words
     spaced_string = re.sub(r'_', ' ', input_string)
+    
+    # Insert spaces before capital letters (except at start)
     spaced_string = re.sub(r'(?<!^)(?=[A-Z])', ' ', spaced_string)
     
-    # Remove non-alphanumeric characters and convert to lowercase
+    # Remove non-alphanumeric characters, convert to lowercase
     cleaned_string = re.sub(r'[^a-zA-Z0-9\s]', '', spaced_string).lower()
     
-    # Split into words
-    words = cleaned_string.split()
+    # Split into words, filter out empty strings
+    words = [word for word in cleaned_string.split() if word]
     
-    # If there are no words, return empty string
+    # If no words, return empty string
     if not words:
         return ""
     
-    # Process words: keep adjacent letters together, handle numbers
+    # Processes words into separate segments
     processed_words = []
-    current_word = ""
+    current_segment = ""
     current_is_numeric = False
     
     for word in words:
-        # Check if current word is numeric
+        # Check if current word is entirely numeric
         is_numeric = word.isnumeric()
         
-        # If it's a number or matches the current state, extend the current word
-        if is_numeric == current_is_numeric or not current_word:
-            current_word += word
+        # If current segment is empty or matches numeric state, add to segment
+        if not current_segment or is_numeric == current_is_numeric:
+            current_segment += word
             current_is_numeric = is_numeric
         else:
-            # Add the previous word and start a new one
-            processed_words.append(current_word)
-            current_word = word
+            # Different type, so add previous segment and start new
+            processed_words.append(current_segment)
+            current_segment = word
             current_is_numeric = is_numeric
     
-    # Add the last word
-    processed_words.append(current_word)
+    # Add final segment
+    processed_words.append(current_segment)
     
-    # Join with hyphen
     return '-'.join(processed_words)
