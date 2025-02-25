@@ -40,24 +40,28 @@ def convert_to_alternating_path_case(input_string: str) -> str:
     # Remove non-alphanumeric characters and convert to lowercase
     cleaned_string = re.sub(r'[^a-zA-Z0-9\s]', '', spaced_string).lower()
     
-    # Split into words, filter out empty strings, join adjacent numbers and letters
-    split_words = cleaned_string.split()
-    merged_words = []
+    # Split into words
+    words = cleaned_string.split()
     
-    current_merged = ""
-    for word in split_words:
-        # If current word is numeric or previous merged is numeric and current word contains letters
-        if word.isnumeric() or (current_merged.isnumeric() and word.isalpha()):
-            current_merged += word
+    # If there are no words, return empty string
+    if not words:
+        return ""
+    
+    # Process words: keep numbers together, join letters
+    processed_words = []
+    current_word = words[0]
+    
+    for word in words[1:]:
+        # If current word is numeric or previous word is numeric
+        if word.isnumeric() or current_word.isnumeric():
+            processed_words.append(current_word)
+            current_word = word
         else:
-            # If we have a previous merged word, add it
-            if current_merged:
-                merged_words.append(current_merged)
-            current_merged = word
+            # Concatenate non-numeric words
+            current_word += word
     
-    # Add the last merged word if it exists
-    if current_merged:
-        merged_words.append(current_merged)
+    # Add the last word
+    processed_words.append(current_word)
     
     # Join with hyphen
-    return '-'.join(merged_words)
+    return '-'.join(processed_words)
