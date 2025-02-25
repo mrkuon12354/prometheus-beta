@@ -48,26 +48,26 @@ def convert_to_alternating_path_case(input_string: str) -> str:
     if not words:
         return ""
     
-    # Process words, grouping by type (numeric/non-numeric)
+    # Group sequences of letters, keeping numbers distinct
     result_words = []
-    current_segment = []
-    current_is_numeric = None
+    current_letters = ""
     
     for word in words:
-        # Determine if current word is numeric
-        is_numeric = word.isnumeric()
-        
-        # If first word or same type as current segment
-        if current_is_numeric is None or is_numeric == current_is_numeric:
-            current_segment.append(word)
-            current_is_numeric = is_numeric
+        # Check if the word is entirely numeric
+        if word.isnumeric():
+            # If we have accumulated letters, add them first
+            if current_letters:
+                result_words.append(current_letters)
+                current_letters = ""
+            
+            # Add the numeric word
+            result_words.append(word)
         else:
-            # Different type detected, add previous segment and start new
-            result_words.append(''.join(current_segment))
-            current_segment = [word]
-            current_is_numeric = is_numeric
+            # Accumulate letters
+            current_letters += word
     
-    # Add final segment
-    result_words.append(''.join(current_segment))
+    # Add any remaining letters
+    if current_letters:
+        result_words.append(current_letters)
     
     return '-'.join(result_words)
