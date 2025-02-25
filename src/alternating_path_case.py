@@ -48,29 +48,39 @@ def convert_to_alternating_path_case(input_string: str) -> str:
     if not words:
         return ""
     
-    # Group words, keeping numeric words separate
+    # Group numeric and non-numeric words
     result_words = []
-    current_word = ""
+    
+    # Temporary storage to handle numeric/non-numeric groups
+    current_numeric_group = ""
+    current_letter_group = ""
     
     for word in words:
-        # If current word is numeric or previous word was numeric
-        if word.isnumeric() or (current_word and current_word.isnumeric()):
-            # If we have a non-numeric previous word, add it
-            if current_word and not current_word.isnumeric():
-                result_words.append(current_word)
-                current_word = word
-            else:
-                current_word += word
+        if word.isnumeric():
+            # If we have accumulated letters, add them first
+            if current_letter_group:
+                result_words.append(current_letter_group)
+                current_letter_group = ""
+            
+            # If we have a different numeric group, add it first
+            if current_numeric_group and current_numeric_group != word:
+                result_words.append(current_numeric_group)
+            
+            # Update or initialize numeric group
+            current_numeric_group = word
         else:
-            # If we have a numeric previous word, add it
-            if current_word and current_word.isnumeric():
-                result_words.append(current_word)
-                current_word = word
-            else:
-                current_word += word
+            # If we have a numeric group, add it
+            if current_numeric_group:
+                result_words.append(current_numeric_group)
+                current_numeric_group = ""
+            
+            # Accumulate letters 
+            current_letter_group += word
     
-    # Add final word
-    if current_word:
-        result_words.append(current_word)
+    # Add any remaining groups
+    if current_numeric_group:
+        result_words.append(current_numeric_group)
+    if current_letter_group:
+        result_words.append(current_letter_group)
     
     return '-'.join(result_words)
