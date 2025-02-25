@@ -48,9 +48,9 @@ def convert_to_alternating_path_case(input_string: str) -> str:
     if not words:
         return ""
     
-    # Group adjacent alphanumeric and numeric tokens
+    # Split long non-numeric words and handle numeric/non-numeric groups
     result_words = []
-    current_group = []
+    current_segment = []
     current_is_numeric = None
     
     for word in words:
@@ -59,16 +59,29 @@ def convert_to_alternating_path_case(input_string: str) -> str:
         
         # If this is the first word or matches the current grouping type
         if current_is_numeric is None or is_numeric == current_is_numeric:
-            current_group.append(word)
+            if is_numeric:
+                # Keep numeric words together
+                current_segment.append(word)
+            else:
+                # For non-numeric words, process each character
+                current_segment.extend(list(word))
             current_is_numeric = is_numeric
         else:
             # Different type, so add previous group and start a new one
-            result_words.append(''.join(current_group))
-            current_group = [word]
+            # Join current segment based on type
+            if current_is_numeric:
+                result_words.append(''.join(current_segment))
+            else:
+                result_words.extend(current_segment)
+            
+            # Start new segment
+            current_segment = list(word) if not is_numeric else [word]
             current_is_numeric = is_numeric
     
     # Add final group
-    if current_group:
-        result_words.append(''.join(current_group))
+    if current_is_numeric:
+        result_words.append(''.join(current_segment))
+    else:
+        result_words.extend(current_segment)
     
     return '-'.join(result_words)
