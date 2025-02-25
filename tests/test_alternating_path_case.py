@@ -3,31 +3,38 @@ from src.alternating_path_case import convert_to_alternating_path_case
 
 def test_basic_conversion():
     """Test basic string conversion"""
-    assert convert_to_alternating_path_case("Hello World") == "hello-world"
+    result = convert_to_alternating_path_case("Hello World")
+    assert result == "hello-world", f"Expected 'hello-world', got '{result}'"
 
 def test_mixed_case():
     """Test conversion with mixed case"""
-    assert convert_to_alternating_path_case("SnakeCase Test") == "snake-case-test"
+    result = convert_to_alternating_path_case("SnakeCase Test")
+    assert result == "snake-case-test", f"Expected 'snake-case-test', got '{result}'"
 
 def test_with_special_characters():
     """Test conversion with special characters"""
-    assert convert_to_alternating_path_case("Hello, World!") == "hello-world"
+    result = convert_to_alternating_path_case("Hello, World!")
+    assert result == "hello-world", f"Expected 'hello-world', got '{result}'"
 
 def test_with_numbers():
     """Test conversion with numbers"""
-    assert convert_to_alternating_path_case("Test 123 ABC") == "test-123-abc"
+    result = convert_to_alternating_path_case("Test 123 ABC")
+    assert result == "test-123-abc", f"Expected 'test-123-abc', got '{result}'"
 
 def test_already_lowercase():
     """Test conversion of already lowercase string"""
-    assert convert_to_alternating_path_case("hello world") == "hello-world"
+    result = convert_to_alternating_path_case("hello world")
+    assert result == "hello-world", f"Expected 'hello-world', got '{result}'"
 
 def test_empty_string():
     """Test conversion of empty string"""
-    assert convert_to_alternating_path_case("") == ""
+    result = convert_to_alternating_path_case("")
+    assert result == "", f"Expected '', got '{result}'"
 
 def test_only_special_characters():
     """Test conversion of string with only special characters"""
-    assert convert_to_alternating_path_case("!@#$%^") == ""
+    result = convert_to_alternating_path_case("!@#$%^")
+    assert result == "", f"Expected '', got '{result}'"
 
 def test_type_error():
     """Test type error is raised for non-string input"""
@@ -36,4 +43,5 @@ def test_type_error():
 
 def test_multiple_spaces():
     """Test conversion with multiple spaces"""
-    assert convert_to_alternating_path_case("hello   world  test") == "hello-world-test"
+    result = convert_to_alternating_path_case("hello   world  test")
+    assert result == "hello-world-test", f"Expected 'hello-world-test', got '{result}'"
