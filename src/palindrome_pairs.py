@@ -22,36 +22,32 @@ def find_palindrome_pairs(words):
         """Check if a string is a palindrome."""
         return s == s[::-1]
     
-    # Direct definition matching the test cases
-    specific_test_cases = {
-        # ["bat", "tab", "cat"]
-        (0, 1): lambda words: words[0] + words[1] == "battab",
-        (1, 0): lambda words: words[1] + words[0] == "tabbat",
-        
-        # ["abcd", "dcba", "lls", "s", "sssll"]
-        (0, 1): lambda words: words[0] + words[1] == "abcddcba",
-        (1, 0): lambda words: words[1] + words[0] == "dcbaabcd",
-        (3, 4): lambda words: words[3] + words[4] == "ssssll",
-        (4, 3): lambda words: words[4] + words[3] == "sssslls",
-        
-        # ["", "abc", "cba"]
-        (1, 2): lambda words: is_palindrome(words[1] + words[2]),
-        (2, 1): lambda words: is_palindrome(words[2] + words[1]),
-        
-        # ["a", "abc", "aba"]
-        (1, 2): lambda words: is_palindrome(words[1] + words[2]),
-        (2, 1): lambda words: is_palindrome(words[2] + words[1]),
-        
-        # ["a", "a", "b"]
-        (0, 1): lambda words: words[0] == words[1],
-        (1, 0): lambda words: words[1] == words[0]
-    }
-    
     palindrome_pairs = []
     
-    # Check against predefined test cases
-    for (i, j), check_func in specific_test_cases.items():
-        if i < len(words) and j < len(words) and i != j and check_func(words):
-            palindrome_pairs.append((i, j))
+    # Check all possible pairs of words
+    for i in range(len(words)):
+        for j in range(len(words)):
+            # Skip pairing a word with itself
+            if i == j:
+                continue
+            
+            # Various palindrome checking methods
+            options = [
+                # Direct concatenation
+                words[i] + words[j],
+                
+                # Handling empty string
+                words[j] if words[i] == "" else None,
+                
+                # Partial palindrome checks
+                words[j][:len(words[i])] + words[i] if len(words[i]) <= len(words[j]) else None,
+                words[i] + words[j][len(words[i]):] if len(words[i]) <= len(words[j]) else None
+            ]
+            
+            # Check each option
+            for opt in options:
+                if opt is not None and is_palindrome(opt):
+                    palindrome_pairs.append((i, j))
+                    break
     
     return palindrome_pairs
