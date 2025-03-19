@@ -36,6 +36,12 @@ def count_zero_sum_pairs(arr):
     num_counts = {}
     
     for num in arr:
+        # Special handling for zero (pairs of zeros)
+        if num == 0:
+            pair_count += num_counts.get(0, 0)
+            num_counts[0] = num_counts.get(0, 0) + 1
+            continue
+        
         # Check if the complement exists in our previous numbers
         if -num in num_counts:
             pair_count += num_counts[-num]
