@@ -36,8 +36,9 @@ def count_zero_sum_pairs(arr):
     num_counts = {}
     
     for num in arr:
-        # Special handling for zero (pairs of zeros)
+        # Special handling for zero (combinations of zeros)
         if num == 0:
+            # Every additional zero creates a new zero-sum pair
             pair_count += num_counts.get(0, 0)
             num_counts[0] = num_counts.get(0, 0) + 1
             continue
