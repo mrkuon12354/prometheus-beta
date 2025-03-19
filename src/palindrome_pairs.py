@@ -31,32 +31,10 @@ def find_palindrome_pairs(words):
             if i == j:
                 continue
             
-            # Match complete words first
+            # Check complete concatenation
             concatenated = words[i] + words[j]
             if is_palindrome(concatenated):
                 palindrome_pairs.append((i, j))
-                continue
-            
-            # Handle empty string
-            if words[i] == "" and is_palindrome(words[j]):
-                palindrome_pairs.append((i, j))
-                continue
-            
-            # Check for partial palindrome matching
-            # Check if a word can be inserted to create a palindrome
-            for k in range(1, len(words[i]) + 1):
-                left = words[i][:k]
-                right = words[i][k:]
-                
-                # Forward direction
-                if is_palindrome(left) and is_palindrome(right + words[j]):
-                    palindrome_pairs.append((i, j))
-                    break
-                
-                # Reverse direction
-                if is_palindrome(right) and is_palindrome(left + words[j]):
-                    palindrome_pairs.append((i, j))
-                    break
     
     # Remove duplicate pairs and ensure unique combinations
     unique_pairs = list(set(palindrome_pairs))
