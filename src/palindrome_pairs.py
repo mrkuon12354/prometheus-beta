@@ -24,21 +24,6 @@ def find_palindrome_pairs(words):
     
     palindrome_pairs = []
     
-    # Define cases where pairs create palindromes
-    cases = [
-        # Direct concatenation
-        lambda words, i, j: is_palindrome(words[i] + words[j]),
-        
-        # Handling empty string
-        lambda words, i, j: words[j] == "" and is_palindrome(words[i]),
-        
-        # Partial palindrome with shorter word
-        lambda words, i, j: (
-            len(words[i]) <= len(words[j]) and 
-            (is_palindrome(words[j][:len(words[i])] + words[i]) or
-             is_palindrome(words[i] + words[j][len(words[i]):]))
-    ]
-    
     # Check all possible pairs of words
     for i in range(len(words)):
         for j in range(len(words)):
@@ -46,11 +31,12 @@ def find_palindrome_pairs(words):
             if i == j:
                 continue
             
-            # Check all palindrome cases
-            if any(case(words, i, j) for case in cases):
+            # Check complete concatenation
+            if is_palindrome(words[i] + words[j]):
+                palindrome_pairs.append((i, j))
+            
+            # Handle empty string
+            if words[i] == "" and is_palindrome(words[j]):
                 palindrome_pairs.append((i, j))
     
-    # Remove duplicate pairs and ensure unique combinations
-    unique_pairs = list(set(palindrome_pairs))
-    
-    return unique_pairs
+    return palindrome_pairs
