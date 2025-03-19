@@ -31,24 +31,8 @@ def find_palindrome_pairs(words):
             if i == j:
                 continue
             
-            # Handle special cases
-            if words[i] == "" and is_palindrome(words[j]):
-                palindrome_pairs.append((i, j))
-                continue
-            
-            # Check if shorter word is substring and palindrome forms
-            shorter_word_index = i if len(words[i]) <= len(words[j]) else j
-            longer_word_index = j if shorter_word_index == i else i
-            shorter = words[shorter_word_index]
-            longer = words[longer_word_index]
-            
-            # Partial match from start or end
-            if (is_palindrome(longer[:len(shorter)] + shorter) or 
-                is_palindrome(shorter + longer[len(shorter):]) or
-                is_palindrome(words[i] + words[j])):
+            # Direct concatenation creates a palindrome
+            if is_palindrome(words[i] + words[j]):
                 palindrome_pairs.append((i, j))
     
-    # Remove duplicate pairs
-    unique_pairs = list(set(palindrome_pairs))
-    
-    return unique_pairs
+    return palindrome_pairs
