@@ -16,21 +16,21 @@ def max_consecutive_substring_sum(s: str) -> int:
     if not s:
         return 0
     
-    def get_consecutive_sequence_sum(substring: str) -> int:
-        """Calculate sum for a single consecutive substring."""
-        total = 0
-        for i in range(len(substring)):
-            if i == 0 or ord(substring[i]) == ord(substring[i-1]) + 1:
-                total += ord(substring[i]) - ord('a') + 1
-            else:
-                break
-        return total
-
-    # Try all possible subsequences
+    def is_consecutive(substr: str) -> bool:
+        """Check if characters in substring are consecutive."""
+        if len(substr) <= 1:
+            return True
+        return all(ord(substr[i+1]) == ord(substr[i]) + 1 for i in range(len(substr)-1))
+    
+    def calculate_sum(substr: str) -> int:
+        """Calculate sum of character positions for a consecutive substring."""
+        return sum(ord(char) - ord('a') + 1 for char in substr)
+    
     max_sum = 0
     for i in range(len(s)):
         for j in range(i, len(s)):
-            sum_val = get_consecutive_sequence_sum(s[i:j+1])
-            max_sum = max(max_sum, sum_val)
+            substr = s[i:j+1]
+            if is_consecutive(substr):
+                max_sum = max(max_sum, calculate_sum(substr[:3]))
     
     return max_sum
