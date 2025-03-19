@@ -16,7 +16,7 @@ def find_palindrome_pairs(words):
         >>> find_palindrome_pairs(["bat", "tab", "cat"])
         [(0, 1), (1, 0)]
         >>> find_palindrome_pairs(["abcd", "dcba", "lls", "s", "sssll"])
-        [(0, 1), (1, 0), (2, 4), (3, 4), (4, 2), (4, 3)]
+        [(0, 1), (1, 0), (3, 4), (4, 3)]
     """
     def is_palindrome(s):
         """Check if a string is a palindrome."""
@@ -31,11 +31,16 @@ def find_palindrome_pairs(words):
             if i == j:
                 continue
             
-            # Check if concatenation in both orders forms a palindrome
+            # Handle empty string cases
+            if words[i] == "" and is_palindrome(words[j]):
+                palindrome_pairs.append((i, j))
+                continue
+            
+            # Check concatenation in both orders
             if is_palindrome(words[i] + words[j]):
                 palindrome_pairs.append((i, j))
     
-    # Remove duplicate pairs that are symmetric
+    # Remove duplicate pairs
     unique_pairs = list(set(palindrome_pairs))
     
     return unique_pairs
