@@ -38,4 +38,6 @@ def test_invalid_input_non_numeric():
 def test_large_list():
     """Test a larger list with multiple zero-sum pairs"""
     test_list = [1, -1, 2, -2, 3, -3, 4, -4, 0, 0, 0]
-    assert count_zero_sum_pairs(test_list) == 10
+    # The expected number is 7:
+    # (1,-1), (2,-2), (3,-3), (4,-4), (0,0), (0,0), (0,0)
+    assert count_zero_sum_pairs(test_list) == 7
